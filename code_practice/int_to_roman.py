@@ -5,22 +5,16 @@ class Solution(object):
         :rtype: str
         """
         output = ""
-        cur_sym_list = ['I', 'V', 'X', 'L', 'C', 'D', 'M']
+        cur_sym_list = ['I', 'V', 'X', 'L', 'C', 'D', 'M', '**dummy**', '**dummy**']
         
         while num:
             digit = num % 10
             num = int(num/10)
-            if digit == 0:
-                pass
-            elif digit < 4:
-                output = (cur_sym_list[0] * digit) + output
-            elif digit == 4:
-                output = cur_sym_list[0] + cur_sym_list[1] + output
-            elif digit < 9:
-                output = cur_sym_list[1] + (cur_sym_list[0] * (digit - 5)) + output
+            if digit % 5 == 4:
+                output = cur_sym_list[0] + cur_sym_list[int(digit/5) + 1] + output
             else:
-                output = cur_sym_list[0] + cur_sym_list[2] + output
-                
+                output = cur_sym_list[1] * int(digit / 5) + (cur_sym_list[0] * (digit % 5)) + output
+
             cur_sym_list = cur_sym_list[2:]
             
         return output

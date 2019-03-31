@@ -7,6 +7,9 @@ class TreeNode():
     def set_val(self, val):
         self._val = val
 
+    def __str__(self):
+        return str(self._val)
+
     def to_str(self):
         return str(self._val)
 
@@ -22,8 +25,8 @@ class Tree():
         if val == 1:
             return
 
-        left_node = TreeNode("Left_" + str(val - 1))
-        right_node = TreeNode("Right_" + str(val - 1))
+        left_node = TreeNode("L_" + str(val - 1))
+        right_node = TreeNode("R_" + str(val - 1))
         node.insert_left(left_node)
         self.populate(left_node, val - 1)
         node.insert_right(right_node)
@@ -73,8 +76,48 @@ class Tree():
 
             node = stack[-1][0]
 
+    def print_preorder_iterative(self):
+        stack = []
+        output = ""
+
+        node = self._root
+        while True:
+            if node:
+                stack.append(node._right)
+                stack.append(node._left)
+                output += str(node) + ", "
+
+            if not stack:
+                return output[0:-2]
+
+            node = stack.pop()
+
+    def print_inorder_iterative(self):
+        stack = []
+        output = ""
+
+        node = self._root
+        while True:
+            if node:
+                if stack and node == stack[-1]:
+                    output += str(node) + ", "
+                    stack.pop()
+                    node = node._right
+                    continue
+
+                stack.append(node)
+                node = node._left
+                continue
+
+            if not stack:
+                return output[0: -2]
+
+            node = stack[-1]
+
 if __name__ == "__main__":
     tree = Tree()
     tree.build_tree(4)
-    print tree.print_preorder()
-    print tree.print_postorder_iterative()
+    print "Preorder: ", tree
+    print "Postorder iterative: ", tree.print_postorder_iterative()
+    print "Preorder iterative: ", tree.print_preorder_iterative()
+    print "In order iterative: ", tree.print_inorder_iterative()
